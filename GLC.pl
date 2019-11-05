@@ -20,17 +20,30 @@
 %gramáticas libres de contexto en donde se permite a los no 
 %terminales contener argumentos que representen la interdependencia 
 %de los componentes de una frase.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Oraciones Simples %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%La oración simple es la que está formada por un sólo verbo
 
 
 %Validar-Oraciones
-validar:-write('Ingrese oracion a validar: '),readln(Oracion),oracion(Oracion,[]).
+validar:-write('Ingrese oracion a validar: '),readln(Oracion),nl,write(Oracion),oracion(Oracion,[]).
 
-
-%Oracion
+%Oraciones-Impersonales(Saludos)
+oracion(Oracion,Vacio):-saludo(Oracion,Cuerpo).
+oracion(Oracion,Vacio):-saludo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
+%Oraciones-Impersonales(Despedidas)
+oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo).
+oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
+%Oraciones-Declarativas
 oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Vacio).
 oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
+%Oraciones-Interrogativas
+oracion(Oracion,Vacio):-signo(Oracion,Vacio).
+oracion(Oracion,Vacio):-signo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Intermedio),sintagmaVerbal(Genero,Numero,Intermedio,Intermedio2),signo(Intermedio2,Vacio).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,6 +64,7 @@ oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVe
 
 sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Cuerpo).
 sintagmaNominal(Genero,Numero,Oracion,Cuerpo):- determinante(Genero,Numero,Oracion,Intermedio),sujeto(Genero,Numero,Intermedio,Cuerpo).
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Intermedio,Intermedio),complemento(Genero,Numero,Intermedio,Cuerpo).
 sintagmaNominal(Genero,Numero,Oracion,Cuerpo):- determinante(Genero,Numero,Oracion,Intermedio),sujeto(Genero,Numero,Intermedio,Intermedio2),complemento(Genero,Numero,Intermedio2,Cuerpo).
 
 
@@ -92,6 +106,26 @@ sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero,Numero,Ora
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% Sintagma Adverbial %%%%%%%%%%%%%%%%%%%%%%%%
+
+%El sintagma adverbial es un grupo de palabras que tiene como núcleo 
+%un adverbio o una locución adverbial.
+
+%La estructura basica es la siguiente:
+%<sintagmaAdverbial> -> <cuantificador> <nucleo> <sintagmaPreposicional>
+
+%El cuantificador y los complementos son opcionales y pueden colocarse 
+%en cualquier lugar de la oración.
+
+
+
+sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-adverbio(Oracion,Cuerpo).
+sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero2,Numero2,Oracion,Intermedio),adverbio(Intermedio,Cuerpo).
+sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-adverbio(Oracion,Intermedio),sintagmaPreposicional(Genero2,Numero2,Intermedio,Cuerpo).
+sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero2,Numero2,Oracion,Intermedio),adverbio(Intermedio,Intermedio2),sintagmaPreposicional(Genero3,Numero3,Intermedio2,Cuerpo).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% Sintagma Preposicional %%%%%%%%%%%%%%%%%%%%%%%
 
 %El sintagma preposicional es aquel formado por una preposición que
@@ -117,11 +151,14 @@ sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo):-enlace(Oracion,Intermedio),
 
 complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo).
 complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo).
+complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo).
 complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% Sustantivos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Los sustantivos denominan o nombran a personas, animales o cosas.
 
 %Sustantivos
 sujeto(masculino,singular,[avion|Cuerpo],Cuerpo).
@@ -133,10 +170,19 @@ sujeto(masculino,singular,[capitan|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[mecanico|Cuerpo],Cuerpo).
 sujeto(masculino,plural,[mecanicos|Cuerpo],Cuerpo).
 sujeto(femenino,singular,[capitana|Cuerpo],Cuerpo).
+sujeto(masculino,singular,[tipo|Cuerpo],Cuerpo).
 %Pronombres
-sujeto(masculino,singular[mayCEy|Cuerpo],Cuerpo).
+sujeto(masculino,singular,[mayCEy|Cuerpo],Cuerpo).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% Determinantes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Los adjetivos determinativos concretan o limitan la extensión del
+%sustantivo, y expresan una relación de la persona, animal o cosa 
+%respecto al espacio, la posesión, la cantidad, etc. Forman, junto a 
+%los artículos, una clase de palabras: los determinantes.
+
+
 
 %Determinantes-Articulos
 determinante(masculino,singular,[el|Cuerpo],Cuerpo).
@@ -171,13 +217,39 @@ determinante(masculino,plural,[pocos|Cuerpo],Cuerpo).
 determinante(masculino,plural,[muchos|Cuerpo],Cuerpo).
 determinante(masculino,singular,[ningun|Cuerpo],Cuerpo).
 %Determinantes-Interrogativos/Exclamativos
+determinante(masculino,singular,[donde|Cuerpo],Cuerpo).
+determinante(femenino,singular,[cuanta|Cuerpo],Cuerpo).
+determinante(masculino,singular,[que|Cuerpo],Cuerpo).
+determinante(masculino,singular,[cuando|Cuerpo],Cuerpo).
 determinante(masculino,plural,[cuantos|Cuerpo],Cuerpo).
+determinante(masculino,singular,[cuanto|Cuerpo],Cuerpo).
 determinante(masculino,singular,[cual|Cuerpo],Cuerpo).
+determinante(masculino,plural,[cuales|Cuerpo],Cuerpo).
+determinante(femenino,plural,[cuales|Cuerpo],Cuerpo).
+%Adjetivos-Calificativos
+adjetivo(masculino,singular,[grande|Cuerpo],Cuerpo).
+adjetivo(femenino,singular,[grande|Cuerpo],Cuerpo).
+adjetivo(masculino,singular,[malo|Cuerpo],Cuerpo).
+adjetivo(masculino,singular,[bueno|Cuerpo],Cuerpo).
+adjetivo(masculino,singular,[largo|Cuerpo],Cuerpo).
+adjetivo(masculino,singular,[corto|Cuerpo],Cuerpo).
+adjetivo(femenino,singular,[mala|Cuerpo],Cuerpo).
+adjetivo(femenino,singular,[buena|Cuerpo],Cuerpo).
+adjetivo(femenino,singular,[larga|Cuerpo],Cuerpo).
+adjetivo(femenino,singular,[corta|Cuerpo],Cuerpo).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Verbos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%Los verbos son aquellas palabras que se utilizan para expresar 
+%acciones, estados, actitudes, condiciones, sucesos de la naturaleza 
+%o existencia.
+
+
+
 %Verbos-Infinitivos
+verbo([vuelar|Cuerpo],Cuerpo).
 verbo([aterrizar|Cuerpo],Cuerpo).
 verbo([despegar|Cuerpo],Cuerpo).
 verbo([reparar|Cuerpo],Cuerpo).
@@ -185,6 +257,7 @@ verbo([solicitar|Cuerpo],Cuerpo).
 verbo([identificar|Cuerpo],Cuerpo).
 verbo([llamar|Cuerpo],Cuerpo).
 %Verbos-Pasado
+verbo([volo|Cuerpo],Cuerpo).
 verbo([aterrizo|Cuerpo],Cuerpo).
 verbo([despego|Cuerpo],Cuerpo).
 verbo([reparo|Cuerpo],Cuerpo).
@@ -192,6 +265,15 @@ verbo([solicito|Cuerpo],Cuerpo).
 verbo([identifico|Cuerpo],Cuerpo).
 verbo([llamo|Cuerpo],Cuerpo).
 %Verbos-Presente
+verbo([es|Cuerpo],Cuerpo).
+verbo([vuela|Cuerpo],Cuerpo).
+verbo([vuelan|Cuerpo],Cuerpo).
+verbo([aterriza|Cuerpo],Cuerpo).
+verbo([despega|Cuerpo],Cuerpo).
+verbo([repara|Cuerpo],Cuerpo).
+verbo([solicita|Cuerpo],Cuerpo).
+verbo([identifica|Cuerpo],Cuerpo).
+verbo([llama|Cuerpo],Cuerpo).
 verbo([aterrizan|Cuerpo],Cuerpo).
 verbo([despegan|Cuerpo],Cuerpo).
 verbo([reparan|Cuerpo],Cuerpo).
@@ -205,25 +287,22 @@ verbo([reparara|Cuerpo],Cuerpo).
 verbo([solicitara|Cuerpo],Cuerpo).
 verbo([identificara|Cuerpo],Cuerpo).
 verbo([llamara|Cuerpo],Cuerpo).
+verbo([volara|Cuerpo],Cuerpo).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Adverbios %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Adjetivos
-adjetivo(masculino,singular,[grande|Cuerpo],Cuerpo).
-adjetivo(femenino,singular,[grande|Cuerpo],Cuerpo).
-adjetivo(masculino,singular,[malo|Cuerpo],Cuerpo).
-adjetivo(masculino,singular,[bueno|Cuerpo],Cuerpo).
-adjetivo(masculino,singular,[largo|Cuerpo],Cuerpo).
-adjetivo(masculino,singular,[corto|Cuerpo],Cuerpo).
-adjetivo(femenino,singular,[mala|Cuerpo],Cuerpo).
-adjetivo(femenino,singular,[buena|Cuerpo],Cuerpo).
-adjetivo(femenino,singular,[larga|Cuerpo],Cuerpo).
-adjetivo(femenino,singular,[corta|Cuerpo],Cuerpo).
+%Los adverbios son palabras que complementan a los verbos, a los 
+%adjetivos o incluso otros adverbios. Se utilizan para expresar lugar,
+%cantidad, tiempo, modo, duda, afirmación, etc.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %Adverbios-Cantidad
 cuantificador(masculino,singular,[mucho|Cuerpo],Cuerpo).
+cuantificador(masculino,singular,[demasiado|Cuerpo],Cuerpo).
+cuantificador(masculino,singular,[algo|Cuerpo],Cuerpo).
 cuantificador(masculino,plural,[muchos|Cuerpo],Cuerpo).
 cuantificador(femenino,plural,[muchas|Cuerpo],Cuerpo).
 cuantificador(femenino,singular,[mucha|Cuerpo],Cuerpo).
@@ -233,9 +312,42 @@ cuantificador(masculino,singular,[muy|Cuerpo],Cuerpo).
 cuantificador(femenino,singular,[muy|Cuerpo],Cuerpo).
 cuantificador(masculino,singular,[enormemente|Cuerpo],Cuerpo).
 cuantificador(femenino,singular,[enormemente|Cuerpo],Cuerpo).
+%Adverbios-Lugar
+adverbio([ahi|Cuerpo],Cuerpo).
+adverbio([aqui|Cuerpo],Cuerpo).
+adverbio([delante|Cuerpo],Cuerpo).
+adverbio([detras|Cuerpo],Cuerpo).
+adverbio([arriba|Cuerpo],Cuerpo).
+adverbio([debajo|Cuerpo],Cuerpo).
+adverbio([cerca|Cuerpo],Cuerpo).
+adverbio([lejos|Cuerpo],Cuerpo).
+adverbio([encima|Cuerpo],Cuerpo).
+adverbio([afuera|Cuerpo],Cuerpo).
+adverbio([dentro|Cuerpo],Cuerpo).
+%Adverbios-Tiempo
+adverbio([ya|Cuerpo],Cuerpo).
+adverbio([aun|Cuerpo],Cuerpo).
+adverbio([hoy|Cuerpo],Cuerpo).
+adverbio([tarde|Cuerpo],Cuerpo).
+adverbio([pronto|Cuerpo],Cuerpo).
+adverbio([todavia|Cuerpo],Cuerpo).
+adverbio([nunca|Cuerpo],Cuerpo).
+adverbio([siempre|Cuerpo],Cuerpo).
+adverbio([ahora|Cuerpo],Cuerpo).
+%Adverbios-Modo
+adverbio([mal|Cuerpo],Cuerpo).
+adverbio([bien|Cuerpo],Cuerpo).
+adverbio([regular|Cuerpo],Cuerpo).
+adverbio([despacio|Cuerpo],Cuerpo).
+adverbio([claro|Cuerpo],Cuerpo).
+adverbio([mejor|Cuerpo],Cuerpo).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Enlaces %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%son la palabra que comienza el sintagma y puede ser una preposición
+%o una locución preposicional.
 
 enlace([a|Cuerpo],Cuerpo).
 enlace([de|Cuerpo],Cuerpo).
@@ -249,5 +361,14 @@ enlace([con|Cuerpo],Cuerpo).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% Interjecciones %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-interjeccion([hola|Cuerpo],Cuerpo).
-interjeccion([hey|Cuerpo],Cuerpo).
+%Saludos
+saludo([hola|Cuerpo],Cuerpo).
+%Despedidas
+despedida([Gracias|Cuerpo],Cuerpo).
+despedida([Adios|Cuerpo],Cuerpo).
+%Emergencias
+emergencia([mayday|Cuerpo],Cuerpo).
+emergencia([7500|Cuerpo],Cuerpo).
+%Signos de Puntuacion
+signo([¿|Cuerpo],Cuerpo).
+signo([?|Cuerpo],Cuerpo).
