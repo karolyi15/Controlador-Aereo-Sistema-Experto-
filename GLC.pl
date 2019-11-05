@@ -12,7 +12,11 @@
 % S= simbolo inicial (no terminal)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Validar-Oraciones
+validar:-write('Ingrese oracion a validar: '),readln(Oracion),oracion(Oracion,[]).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%Oracion
 oracion(Oracion,Vacio):- sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,10 +32,14 @@ sintagmaVerbal(Genero,Numero,Cuerpo,Vacio):- verbo(Cuerpo,Intermedio), complemen
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo);-adjetivo(Genero,Numero,Oracion,Cuerpo).
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo);-cuantificador(Genero,Numero,Oracion,Intermedio),adjetivo(Genero,Numero,Intermedio,Cuerpo).
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo);-adjetivo(Genero,Numero,Oracion,Intermedio),complementoSN(Genero,Numero,Intermedio,Cuerpo).
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo);-cuantificador(Genero,Numero,Oracion,Intermedio),adjetivo(Genero,Numero,Intermedio,Intermedio2),complementoSN(Genero,Numero,Intermedio2,Cuerpo).
+sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-adjetivo(Genero,Numero,Oracion,Cuerpo).
+sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero,Numero,Oracion,Intermedio),adjetivo(Genero,Numero,Intermedio,Cuerpo).
+sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-adjetivo(Genero,Numero,Oracion,Intermedio),complementoSN(Genero,Numero,Intermedio,Cuerpo).
+sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero,Numero,Oracion,Intermedio),adjetivo(Genero,Numero,Intermedio,Intermedio2),complementoSN(Genero,Numero,Intermedio2,Cuerpo).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+sintagmaPreposicional():-.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -133,7 +141,7 @@ cuantificador(femenino,singular,[enormemente|Cuerpo],Cuerpo).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%conjugacion(Verbo):-(  Verbo==solicito; Verbo==identifiquese    ).
+
 
 interjeccion([hola|Cuerpo],Cuerpo).
 interjeccion([hey|Cuerpo],Cuerpo).
