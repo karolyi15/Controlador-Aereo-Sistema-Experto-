@@ -5,20 +5,27 @@ consult(GLC.pl).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% MayCEy Chat %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mayCEy:- write('*****************************\nInicializando Sistema Experto\n*****************************\n'),
-		 waiting.
 
-waiting:- write('\n\nA la espera de solicitud.....\n\n'),readln(Oracion),(oracion(Oracion,[]) -> write('\nbuscar respuesta');write("\nNo entiendo, revise la gramática")),waiting.
+mayCEy:- write('*****************************\nInicializando Sistema Experto\n          ( MayCEy )         \n*****************************\n'),
+		 solicitud.
+
+solicitud:-write('A la espera de solicitud..\n\n'),chat.
+
+chat:-readln(Oracion),oracion(Oracion,[],Identificador),
+	  consulta(Identificador),chat.
+
+consulta(Identificador):-(pregunta(Identificador,Respuesta) -> write(Respuesta); write('No tengo respuesta para la solicitud\n')).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Preguntas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-inicio:-write('Ingrese pregunta:\n'),readln(Pregunta),consulta(Pregunta).
-
-consulta(Pregunta):-pregunta(Pregunta,Respuesta),write(Respuesta).
 
 %pregunta(Pregunta,Respuesta)
 
-pregunta([hola],'Hola ¿ En que lo puedo ayudar ?').
+pregunta('saludo','Hola ¿ En que lo puedo ayudar ?\n').
+pregunta('despedida','Fue un gusto ayudarle\n Cambio y fuera').
+%pregunta([aterrizar],)
+%pregunta([identificar],)
+
 
 

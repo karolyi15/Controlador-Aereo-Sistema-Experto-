@@ -29,23 +29,19 @@
 %La oración simple es la que está formada por un sólo verbo
 
 
-%Validar-Oraciones
-validar:-write('Ingrese oracion a validar: '),readln(Oracion),nl,write(Oracion),oracion(Oracion,[]).
-
-%Oraciones-Impersonales(Saludos)
-oracion(Oracion,Vacio):-saludo(Oracion,Cuerpo).
-oracion(Oracion,Vacio):-saludo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
-%Oraciones-Impersonales(Despedidas)
-oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo).
-oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
+%Oraciones-Impersonales(Saludos/despedidas)
+oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo).
+oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
+%oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo).
+%oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
 %Oraciones-Declarativas
-oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Vacio).
-oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
+%oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Vacio).
+%oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
 %Oraciones-Imperativa
-oracion(Oracion,Vacio):-sintagmaVerbal(Genero,Numero,Oracion,Vacio).
+%oracion(Oracion,Vacio):-sintagmaVerbal(Genero,Numero,Oracion,Vacio).
 %Oraciones-Interrogativas
-oracion(Oracion,Vacio):-signo(Oracion,Vacio).
-oracion(Oracion,Vacio):-signo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Intermedio),sintagmaVerbal(Genero,Numero,Intermedio,Intermedio2),signo(Intermedio2,Vacio).
+%oracion(Oracion,Vacio):-signo(Oracion,Vacio).
+%oracion(Oracion,Vacio):-signo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Intermedio),sintagmaVerbal(Genero,Numero,Intermedio,Intermedio2),signo(Intermedio2,Vacio).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
