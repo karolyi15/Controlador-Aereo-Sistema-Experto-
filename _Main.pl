@@ -23,12 +23,26 @@ consulta(Identificador):-pregunta(Identificador).
 
 pregunta('saludo'):-write('Hola ¿En que lo puedo ayudar?\n'),chat.
 pregunta('despedida'):-write('Fue un gusto ayudarle\n Cambio y fuera'),solicitud.
-pregunta('emergencia'):-write('Inicia procedimiento de emergencia\n'),chat.
-pregunta('aterrizar'):-write('Inicia procedimiento de aterrizaje\n'),chat.
-pregunta('despegar'):-write('Inicia procedimiento de despegue\n'),chat.
+pregunta('emergencia'):-emergencia,chat.
+pregunta('aterrizar'):-aterrizaje,chat.
+pregunta('despegar'):-despegue,chat.
 pregunta('solicitar'):-write('Inicia procedimiento de solicitud\n'),chat.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% Procedimientos %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+aterrizaje:-write('Por favor, identifiquese:\n'),readln(PlaneID),
+			write('Gracias, ¿Qué tipo de aeronave es?\n'),readln(PlaneModel),
+			write('Indique, velocidad, distancia con la pista y dirección:\n'),readln(Datos),
+			write('Su pista asignada es :....\n').
+
+despegue:-write('Por favor, identifiquese:\n'),readln(PlaneID),
+		  write('Gracias, ¿Qué tipo de aeronave es?\n'),readln(PlaneModel),
+		  write('Indique la hora de salida:\n'),readln(HoraSalida),
+		  write('Indique la direccion de salida:\n'),readln(Direccion),
+		  write('Su pista asignada es :....\n').
+
+emergencia:-write('Buenas, ¿Cual es su emergencia?'),readln(Emergencia),
+			write('Por favor, identifiquese:\n'),readln(PlaneID),
+			write('Pista .... asignada y equipo de ayuda enviado!\n').

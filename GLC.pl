@@ -64,9 +64,9 @@ oracion(Oracion,Vacio,Identificador):-sintagmaVerbal(Oracion,Vacio,Identificador
 
 
 
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Cuerpo),!.
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-determinante(Genero,Numero,Oracion,Intermedio),!,sujeto(Genero,Numero,Intermedio,Cuerpo).
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Intermedio),!,complemento(Genero,Numero,Intermedio,Cuerpo).
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo,Identificador):-sujeto(Genero,Numero,Oracion,Cuerpo),!.
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo,Identificador):-determinante(Genero,Numero,Oracion,Intermedio),!,sujeto(Genero,Numero,Intermedio,Cuerpo).
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo,Identificador):-sujeto(Genero,Numero,Oracion,Intermedio),!,complemento(Genero,Numero,Intermedio,Cuerpo,Identificador).
 
 
 
@@ -88,7 +88,7 @@ sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Inte
 
 
 sintagmaVerbal(Oracion,Cuerpo,Identificador):- verbo(Oracion,Cuerpo,Identificador),!.
-sintagmaVerbal(Oracion,Cuerpo,Identificador):- verbo(Oracion,Intermedio,Identificador), complemento(Genero,Numero,Intermedio,Cuerpo),!.
+sintagmaVerbal(Oracion,Cuerpo,Identificador):- verbo(Oracion,Intermedio,Null), complemento(Genero,Numero,Intermedio,Cuerpo,Identificador),!.
 
 
 
@@ -107,7 +107,7 @@ sintagmaVerbal(Oracion,Cuerpo,Identificador):- verbo(Oracion,Intermedio,Identifi
 
 
 
-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo):-enlace(Oracion,Intermedio),complemento(Genero2,Numero2,Intermedio,Cuerpo),!.
+sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo,Identificador):-enlace(Oracion,Intermedio),complemento(Genero2,Numero2,Intermedio,Cuerpo,Identificador),!.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,8 +118,9 @@ sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo):-enlace(Oracion,Intermedio),
 
 
 
-complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),!.
-complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo),!.
+complemento(Genero,Numero,Oracion,Cuerpo,Identificador):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo,Identificador),!.
+complemento(Genero,Numero,Oracion,Cuerpo,Identificador):-sintagmaVerbal(Oracion,Cuerpo,Identificador),!.
+complemento(Genero,Numero,Oracion,Cuerpo,Identificador):-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo,Identificador),!.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -128,8 +129,7 @@ complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,O
 % Los sustantivos denominan o nombran a personas, animales o cosas.
 
 %Sustantivos
-sujeto(masculino,singular,[aterrizar|Cuerpo],Cuerpo).
-sujeto(masculino,singular,[despegar|Cuerpo],Cuerpo).
+
 sujeto(masculino,singular,[avion|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[permiso|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[aeropuerto|Cuerpo],Cuerpo).
