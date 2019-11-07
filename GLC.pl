@@ -26,14 +26,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Oraciones Simples %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%La oración simple es la que está formada por un sólo verbo
+%La oración simple es la que está formada por un sólo verbo.
 
 
 %Oraciones-Impersonales(Saludos/despedidas)
-oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo).
-%oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
-%oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo).
-%oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
+oracion(Oracion,Vacio,'saludo'):-saludo(0,Genero,Oracion,Vacio),!.
+oracion(Oracion,Vacio,'saludo'):-saludo(1,Genero,Oracion,Cuerpo),!,saludo(2,Genero,Cuerpo,Vacio).
+oracion(Oracion,Vacio,'despedida'):-despedida(0,Oracion,Cuerpo),!.
+oracion(Oracion,Vacio,'despedida'):-despedida(1,Oracion,Cuerpo),!,despedida(2,Cuerpo,Vacio).
+oracion(Oracion,Vacio,'emergencia'):-emergencia(Oracion,Cuerpo),!,emergencia(Cuerpo,Vacio).
+
+
 %Oraciones-Declarativas
 %oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Vacio).
 %oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
@@ -363,16 +366,17 @@ enlace([con|Cuerpo],Cuerpo).
 %%%%%%%%%%%%%%%%%%%%%%%%%% Interjecciones %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Saludos
-saludo([hola|Cuerpo],Cuerpo).
-saludo([dias|Cuerpo],Cuerpo).
-saludo([tardes|Cuerpo],Cuerpo).
-saludo([noches|Cuerpo],Cuerpo).
-%saludo([buenos|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
-%saludo([buenas|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
+saludo(0,masculino,[hola|Cuerpo],Cuerpo).
+saludo(2,masculino,[dias|Cuerpo],Cuerpo).
+saludo(2,femenino,[tardes|Cuerpo],Cuerpo).
+saludo(2,femenino,[noches|Cuerpo],Cuerpo).
+saludo(1,masculino,[buenos|Cuerpo],Cuerpo).
+saludo(1,femenino,[buenas|Cuerpo],Cuerpo).
 %Despedidas
-despedida([gracias|Cuerpo],Cuerpo).
-%despedida([muchas|Cuerpo],Cuerpo):-despedida(Cuerpo,Cuerpo2).
-%despedida([adios|Cuerpo],Cuerpo).
+despedida(0,[gracias|Cuerpo],Cuerpo).
+despedida(0,[adios|Cuerpo],Cuerpo).
+despedida(1,[cambio|Cuerpo],Cuerpo).
+despedida(2,[fuera|Cuerpo],Cuerpo).
 %Emergencias
 emergencia([mayday|Cuerpo],Cuerpo).
 emergencia([7500|Cuerpo],Cuerpo).
