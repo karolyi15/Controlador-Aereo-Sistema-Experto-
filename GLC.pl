@@ -41,6 +41,8 @@ oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,
 %Oraciones-Declarativas
 oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Vacio).
 oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
+%Oraciones-Imperativa
+oracion(Oracion,Vacio):-sintagmaVerbal(Genero,Numero,Oracion,Vacio).
 %Oraciones-Interrogativas
 oracion(Oracion,Vacio):-signo(Oracion,Vacio).
 oracion(Oracion,Vacio):-signo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Intermedio),sintagmaVerbal(Genero,Numero,Intermedio,Intermedio2),signo(Intermedio2,Vacio).
@@ -162,6 +164,7 @@ complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,O
 
 %Sustantivos
 sujeto(masculino,singular,[avion|Cuerpo],Cuerpo).
+sujeto(masculino,singular,[permiso|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[aeropuerto|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[controlador|Cuerpo],Cuerpo).
 sujeto(masculino,plural,[aviones|Cuerpo],Cuerpo).
@@ -262,6 +265,7 @@ verbo([aterrizo|Cuerpo],Cuerpo).
 verbo([despego|Cuerpo],Cuerpo).
 verbo([reparo|Cuerpo],Cuerpo).
 verbo([solicito|Cuerpo],Cuerpo).
+verbo([quiero|Cuerpo],Cuerpo).
 verbo([identifico|Cuerpo],Cuerpo).
 verbo([llamo|Cuerpo],Cuerpo).
 %Verbos-Presente
@@ -272,6 +276,7 @@ verbo([aterriza|Cuerpo],Cuerpo).
 verbo([despega|Cuerpo],Cuerpo).
 verbo([repara|Cuerpo],Cuerpo).
 verbo([solicita|Cuerpo],Cuerpo).
+verbo([solicito|Cuerpo],Cuerpo).
 verbo([identifica|Cuerpo],Cuerpo).
 verbo([llama|Cuerpo],Cuerpo).
 verbo([aterrizan|Cuerpo],Cuerpo).
@@ -363,9 +368,15 @@ enlace([con|Cuerpo],Cuerpo).
 
 %Saludos
 saludo([hola|Cuerpo],Cuerpo).
+saludo([dias|Cuerpo],Cuerpo).
+saludo([tardes|Cuerpo],Cuerpo).
+saludo([noches|Cuerpo],Cuerpo).
+saludo([buenos|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
+saludo([buenas|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
 %Despedidas
-despedida([Gracias|Cuerpo],Cuerpo).
-despedida([Adios|Cuerpo],Cuerpo).
+despedida([gracias|Cuerpo],Cuerpo).
+despedida([muchas|Cuerpo],Cuerpo):-despedida(Cuerpo,Cuerpo2).
+despedida([adios|Cuerpo],Cuerpo).
 %Emergencias
 emergencia([mayday|Cuerpo],Cuerpo).
 emergencia([7500|Cuerpo],Cuerpo).

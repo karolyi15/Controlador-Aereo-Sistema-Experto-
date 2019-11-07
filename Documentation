@@ -1,0 +1,30 @@
+Gramatica Libre de Contexto 
+Formato BNF
+
+<oracion>-> <sintagma nominal> <sintagma verbal>
+*****************************************************************
+<sintagma nominal> -> <sujeto>
+<sintagma nominal> -> <determinante> <sujeto> <complemento>
+<sintagma nominal> ->
+
+<sintagma verbal>-> <verbo> <sintagma nominal>
+<sintagma verbal>-> <verbo>
+
+<determinante>-> el| la |los |un |una |unos |unas |este |aquel |ese
+				 dos| tres |veinte |tercero |varios |algunos |mi |tu 
+				 su | nuestros
+
+<verbo>-> aterrizar 
+		  | despegar
+		  | reparar
+
+<interjeccion>-> hola |hey 
+
+
+input= el camello es muy lindo . Y grande
+read= [el,camello,es,muy,lindo]
+oracion([el,camello,es,muy,lindo,.],[]):-saludo(Oracion,Cuerpo),verbo(Cuerpo,Vacio)......
+
+
+saludo([hola|Cuerpo],Cuerpo)
+verbo([verbo|X],X)
