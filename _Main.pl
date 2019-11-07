@@ -6,15 +6,14 @@ consult(GLC.pl).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% MayCEy Chat %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-mayCEy:- write('*****************************\nInicializando Sistema Experto\n          ( MayCEy )         \n*****************************\n'),
+mayCEy:- write('*****************************\nInicializando Sistema Experto\n          ( MayCEy )         \n*****************************'),
 		 solicitud.
 
-solicitud:-write('A la espera de solicitud..\n\n'),chat.
+solicitud:-write('\n\nA la espera de solicitud..\n\n'),chat.
 
-chat:-readln(Oracion),oracion(Oracion,[],Identificador),
-	  consulta(Identificador),chat.
+chat:-readln(Oracion),(oracion(Oracion,[],Identificador) -> consulta(Identificador);write('No tengo respuesta para la solicitud\n'),chat).
 
-consulta(Identificador):-(pregunta(Identificador,Respuesta) -> write(Respuesta); write('No tengo respuesta para la solicitud\n')).
+consulta(Identificador):-pregunta(Identificador).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Preguntas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,8 +21,8 @@ consulta(Identificador):-(pregunta(Identificador,Respuesta) -> write(Respuesta);
 
 %pregunta(Pregunta,Respuesta)
 
-pregunta('saludo','Hola ¿ En que lo puedo ayudar ?\n').
-pregunta('despedida','Fue un gusto ayudarle\n Cambio y fuera').
+pregunta('saludo'):-write('Hola ¿ En que lo puedo ayudar ?\n'),chat.
+pregunta('despedida'):-write('Fue un gusto ayudarle\n Cambio y fuera'),solicitud.
 %pregunta([aterrizar],)
 %pregunta([identificar],)
 

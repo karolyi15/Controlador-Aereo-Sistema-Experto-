@@ -31,7 +31,7 @@
 
 %Oraciones-Impersonales(Saludos/despedidas)
 oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo).
-oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
+%oracion(Oracion,Vacio,'saludo'):-saludo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
 %oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo).
 %oracion(Oracion,Vacio):-despedida(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Vacio).
 %Oraciones-Declarativas
@@ -367,12 +367,12 @@ saludo([hola|Cuerpo],Cuerpo).
 saludo([dias|Cuerpo],Cuerpo).
 saludo([tardes|Cuerpo],Cuerpo).
 saludo([noches|Cuerpo],Cuerpo).
-saludo([buenos|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
-saludo([buenas|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
+%saludo([buenos|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
+%saludo([buenas|Cuerpo],Cuerpo):-saludo(Cuerpo,Cuerpo2).
 %Despedidas
 despedida([gracias|Cuerpo],Cuerpo).
-despedida([muchas|Cuerpo],Cuerpo):-despedida(Cuerpo,Cuerpo2).
-despedida([adios|Cuerpo],Cuerpo).
+%despedida([muchas|Cuerpo],Cuerpo):-despedida(Cuerpo,Cuerpo2).
+%despedida([adios|Cuerpo],Cuerpo).
 %Emergencias
 emergencia([mayday|Cuerpo],Cuerpo).
 emergencia([7500|Cuerpo],Cuerpo).
