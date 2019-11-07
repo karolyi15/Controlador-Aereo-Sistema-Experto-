@@ -11,7 +11,7 @@ mayCEy:- write('*****************************\nInicializando Sistema Experto\n  
 
 solicitud:-write('\n\nA la espera de solicitud..\n\n'),chat.
 
-chat:-readln(Oracion),(oracion(Oracion,[],Identificador) -> consulta(Identificador);write('**No tengo respuesta para la solicitud**\n'),chat).
+chat:-readln(Oracion),(oracion(Oracion,[],Identificador) -> consulta(Identificador);write('**No comprendo la solicitud**\n'),chat).
 
 consulta(Identificador):-pregunta(Identificador).
 
@@ -24,7 +24,10 @@ consulta(Identificador):-pregunta(Identificador).
 pregunta('saludo'):-write('Hola ¿En que lo puedo ayudar?\n'),chat.
 pregunta('despedida'):-write('Fue un gusto ayudarle\n Cambio y fuera'),solicitud.
 pregunta('emergencia'):-write('Inicia procedimiento de emergencia\n'),chat.
-%pregunta([identificar],)
+pregunta('aterrizar'):-write('Inicia procedimiento de aterrizaje\n'),chat.
+pregunta('despegar'):-write('Inicia procedimiento de despegue\n'),chat.
+pregunta('solicitar'):-write('Inicia procedimiento de solicitud\n'),chat.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% Procedimientos %%%%%%%%%%%%%%%%%%%%%%%%%%%

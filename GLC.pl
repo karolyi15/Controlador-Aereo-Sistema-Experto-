@@ -35,13 +35,14 @@ oracion(Oracion,Vacio,'saludo'):-saludo(1,Genero,Oracion,Cuerpo),!,saludo(2,Gene
 oracion(Oracion,Vacio,'despedida'):-despedida(0,Oracion,Cuerpo),!.
 oracion(Oracion,Vacio,'despedida'):-despedida(1,Oracion,Cuerpo),!,despedida(2,Cuerpo,Vacio).
 oracion(Oracion,Vacio,'emergencia'):-emergencia(Oracion,Cuerpo),!,emergencia(Cuerpo,Vacio).
+%Oraciones-Imperativa
+oracion(Oracion,Vacio,Identificador):-sintagmaVerbal(Oracion,Vacio,Identificador),!.
 
 
 %Oraciones-Declarativas
 %oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Vacio).
 %oracion(Oracion,Vacio):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),sintagmaVerbal(Genero,Numero,Cuerpo,Vacio).
-%Oraciones-Imperativa
-%oracion(Oracion,Vacio):-sintagmaVerbal(Genero,Numero,Oracion,Vacio).
+
 %Oraciones-Interrogativas
 %oracion(Oracion,Vacio):-signo(Oracion,Vacio).
 %oracion(Oracion,Vacio):-signo(Oracion,Cuerpo),sintagmaNominal(Genero,Numero,Cuerpo,Intermedio),sintagmaVerbal(Genero,Numero,Intermedio,Intermedio2),signo(Intermedio2,Vacio).
@@ -63,10 +64,14 @@ oracion(Oracion,Vacio,'emergencia'):-emergencia(Oracion,Cuerpo),!,emergencia(Cue
 
 
 
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Cuerpo).
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):- determinante(Genero,Numero,Oracion,Intermedio),sujeto(Genero,Numero,Intermedio,Cuerpo).
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Intermedio,Intermedio),complemento(Genero,Numero,Intermedio,Cuerpo).
-sintagmaNominal(Genero,Numero,Oracion,Cuerpo):- determinante(Genero,Numero,Oracion,Intermedio),sujeto(Genero,Numero,Intermedio,Intermedio2),complemento(Genero,Numero,Intermedio2,Cuerpo).
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Cuerpo),!.
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-determinante(Genero,Numero,Oracion,Intermedio),!,sujeto(Genero,Numero,Intermedio,Cuerpo).
+sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-sujeto(Genero,Numero,Oracion,Intermedio),!,complemento(Genero,Numero,Intermedio,Cuerpo).
+
+
+
+%sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-determinante(Genero,Numero,Oracion,Intermedio),sujeto(Genero,Numero,Intermedio,Cuerpo).
+%sintagmaNominal(Genero,Numero,Oracion,Cuerpo):-determinante(Genero,Numero,Oracion,Intermedio),sujeto(Genero,Numero,Intermedio,Intermedio2),complemento(Genero,Numero,Intermedio2,Cuerpo).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,48 +87,11 @@ sintagmaNominal(Genero,Numero,Oracion,Cuerpo):- determinante(Genero,Numero,Oraci
 %son opcionales.
 
 
-
-sintagmaVerbal(Genero,Numero,Cuerpo,Vacio):- verbo(Cuerpo,Vacio).
-sintagmaVerbal(Genero,Numero,Cuerpo,Vacio):- verbo(Cuerpo,Intermedio), complemento(Genero,Numero,Intermedio,Vacio).
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%% Sintagma Adjetival %%%%%%%%%%%%%%%%%%%%%%%%
-
-%El sintagma adjetival es aquel sintagma cuyo núcleo es un adjetivo.
-
-%La estructura basica es la siguiente:
-%<sintagmaAdjetival> -> <cuantificador> <adjetivo> <complemento>
-
-%El cuantificador y los complementos son opcionales y pueden 
-%colocarse en cualquier lugar de la oración.
+sintagmaVerbal(Oracion,Cuerpo,Identificador):- verbo(Oracion,Cuerpo,Identificador),!.
+sintagmaVerbal(Oracion,Cuerpo,Identificador):- verbo(Oracion,Intermedio,Identificador), complemento(Genero,Numero,Intermedio,Cuerpo),!.
 
 
 
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-adjetivo(Genero,Numero,Oracion,Cuerpo).
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero,Numero,Oracion,Intermedio),adjetivo(Genero,Numero,Intermedio,Cuerpo).
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-adjetivo(Genero,Numero,Oracion,Intermedio),complemento(Genero,Numero,Intermedio,Cuerpo).
-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero,Numero,Oracion,Intermedio),adjetivo(Genero,Numero,Intermedio,Intermedio2),complemento(Genero,Numero,Intermedio2,Cuerpo).
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%% Sintagma Adverbial %%%%%%%%%%%%%%%%%%%%%%%%
-
-%El sintagma adverbial es un grupo de palabras que tiene como núcleo 
-%un adverbio o una locución adverbial.
-
-%La estructura basica es la siguiente:
-%<sintagmaAdverbial> -> <cuantificador> <nucleo> <sintagmaPreposicional>
-
-%El cuantificador y los complementos son opcionales y pueden colocarse 
-%en cualquier lugar de la oración.
-
-
-
-sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-adverbio(Oracion,Cuerpo).
-sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero2,Numero2,Oracion,Intermedio),adverbio(Intermedio,Cuerpo).
-sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-adverbio(Oracion,Intermedio),sintagmaPreposicional(Genero2,Numero2,Intermedio,Cuerpo).
-sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero2,Numero2,Oracion,Intermedio),adverbio(Intermedio,Intermedio2),sintagmaPreposicional(Genero3,Numero3,Intermedio2,Cuerpo).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,7 +107,7 @@ sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo):-cuantificador(Genero2,Numero2,O
 
 
 
-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo):-enlace(Oracion,Intermedio),complemento(Genero2,Numero2,Intermedio,Cuerpo).
+sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo):-enlace(Oracion,Intermedio),complemento(Genero2,Numero2,Intermedio,Cuerpo),!.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,10 +118,8 @@ sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo):-enlace(Oracion,Intermedio),
 
 
 
-complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo).
-complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaAdjetival(Genero,Numero,Oracion,Cuerpo).
-complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaAdverbial(Genero,Numero,Oracion,Cuerpo).
-complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo).
+complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaNominal(Genero,Numero,Oracion,Cuerpo),!.
+complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,Oracion,Cuerpo),!.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -162,6 +128,8 @@ complemento(Genero,Numero,Oracion,Cuerpo):-sintagmaPreposicional(Genero,Numero,O
 % Los sustantivos denominan o nombran a personas, animales o cosas.
 
 %Sustantivos
+sujeto(masculino,singular,[aterrizar|Cuerpo],Cuerpo).
+sujeto(masculino,singular,[despegar|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[avion|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[permiso|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[aeropuerto|Cuerpo],Cuerpo).
@@ -173,7 +141,6 @@ sujeto(masculino,singular,[mecanico|Cuerpo],Cuerpo).
 sujeto(masculino,plural,[mecanicos|Cuerpo],Cuerpo).
 sujeto(femenino,singular,[capitana|Cuerpo],Cuerpo).
 sujeto(masculino,singular,[tipo|Cuerpo],Cuerpo).
-%Pronombres
 sujeto(masculino,singular,[mayCEy|Cuerpo],Cuerpo).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -251,47 +218,14 @@ adjetivo(femenino,singular,[corta|Cuerpo],Cuerpo).
 
 
 %Verbos-Infinitivos
-verbo([vuelar|Cuerpo],Cuerpo).
-verbo([aterrizar|Cuerpo],Cuerpo).
-verbo([despegar|Cuerpo],Cuerpo).
-verbo([reparar|Cuerpo],Cuerpo).
-verbo([solicitar|Cuerpo],Cuerpo).
-verbo([identificar|Cuerpo],Cuerpo).
-verbo([llamar|Cuerpo],Cuerpo).
-%Verbos-Pasado
-verbo([volo|Cuerpo],Cuerpo).
-verbo([aterrizo|Cuerpo],Cuerpo).
-verbo([despego|Cuerpo],Cuerpo).
-verbo([reparo|Cuerpo],Cuerpo).
-verbo([solicito|Cuerpo],Cuerpo).
-verbo([quiero|Cuerpo],Cuerpo).
-verbo([identifico|Cuerpo],Cuerpo).
-verbo([llamo|Cuerpo],Cuerpo).
+verbo([aterrizar|Cuerpo],Cuerpo,'aterrizar').
+verbo([despegar|Cuerpo],Cuerpo,'despegar').
+verbo([solicitar|Cuerpo],Cuerpo,'solicitar').
 %Verbos-Presente
-verbo([es|Cuerpo],Cuerpo).
-verbo([vuela|Cuerpo],Cuerpo).
-verbo([vuelan|Cuerpo],Cuerpo).
-verbo([aterriza|Cuerpo],Cuerpo).
-verbo([despega|Cuerpo],Cuerpo).
-verbo([repara|Cuerpo],Cuerpo).
-verbo([solicita|Cuerpo],Cuerpo).
-verbo([solicito|Cuerpo],Cuerpo).
-verbo([identifica|Cuerpo],Cuerpo).
-verbo([llama|Cuerpo],Cuerpo).
-verbo([aterrizan|Cuerpo],Cuerpo).
-verbo([despegan|Cuerpo],Cuerpo).
-verbo([reparan|Cuerpo],Cuerpo).
-verbo([solicitan|Cuerpo],Cuerpo).
-verbo([identifican|Cuerpo],Cuerpo).
-verbo([llaman|Cuerpo],Cuerpo).
-%Verbos-Futuro
-verbo([aterrizara|Cuerpo],Cuerpo).
-verbo([despegara|Cuerpo],Cuerpo).
-verbo([reparara|Cuerpo],Cuerpo).
-verbo([solicitara|Cuerpo],Cuerpo).
-verbo([identificara|Cuerpo],Cuerpo).
-verbo([llamara|Cuerpo],Cuerpo).
-verbo([volara|Cuerpo],Cuerpo).
+verbo([solicito|Cuerpo],Cuerpo,'solicitar').
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
