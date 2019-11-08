@@ -41,8 +41,59 @@ despegue:-write('Por favor, identifiquese:\n'),readln(PlaneID),
 		  write('Gracias, ¿Qué tipo de aeronave es?\n'),readln(PlaneModel),
 		  write('Indique la hora de salida:\n'),readln(HoraSalida),
 		  write('Indique la direccion de salida:\n'),readln(Direccion),
-		  write('Su pista asignada es :....\n').
+		  assign(PlaneModel,Direccion,Pista), 
+		  write('Su pista asignada es : '),write(Pista),nl.
 
-emergencia:-write('Buenas, ¿Cual es su emergencia?'),readln(Emergencia),
+emergencia:-write('Buenas, ¿Cual es su emergencia?\n'),readln(Emergencia),
 			write('Por favor, identifiquese:\n'),readln(PlaneID),
 			write('Pista .... asignada y equipo de ayuda enviado!\n').
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Asignar %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+assign(Plane,Dir,Track):-airplane(Plane,Size),track(Track,Size,Dir),!.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Aviones %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+airplane([cessna|_],small).
+airplane([embraerPhenom|_],small).
+airplane([beechcraft|_],small).
+airplane([boing717|_],medium).
+airplane([embraer190|_],medium).
+airplane([airBusA220|_],medium).
+airplane([boing747|_],big).
+airplane([airBusA340|_],big).
+airplane([airBusA380|_],big).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Pistas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+track(p1,small,[nortexsur|_]).
+track(p2_1,small,[estexoeste|_]).
+track(p2_1,medium,[estexoeste|_]).
+track(p2_2,medium,[oestexeste|_]).
+track(p2_2,small,[oestexeste|_]).
+track(p3,small,[nortexsur|_]).
+track(p3,medium,[nortexsur|_]).
+track(p3,big,[nortexsur|_]).
+track(p3,small,[surxnorte|_]).
+track(p3,medium,[surxnorte|_]).
+track(p3,big,[surxnorte|_]).
+track(p3,small,[estexoeste|_]).
+track(p3,medium,[estexoeste|_]).
+track(p3,big,[estexoeste|_]).
+track(p3,small,[oestexeste|_]).
+track(p3,medium,[oestexeste|_]).
+track(p3,big,[oestexeste|_]).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Eventos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

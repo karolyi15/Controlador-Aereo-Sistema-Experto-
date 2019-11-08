@@ -299,6 +299,9 @@ enlace([con|Cuerpo],Cuerpo).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% Interjecciones %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%Las interjecciones  son  palabras  que  expresan  sentimientos  muy  
+%vivos,  de  dolor,  de  alegría, de tristeza, etc.
+
 %Saludos
 saludo(0,masculino,[hola|Cuerpo],Cuerpo).
 saludo(2,masculino,[dias|Cuerpo],Cuerpo).
