@@ -34,19 +34,20 @@ pregunta('solicitar'):-write('Inicia procedimiento de solicitud\n'),chat.
 
 aterrizaje:-write('Por favor, identifiquese:\n'),readln(PlaneID),
 			write('Gracias, ¿Qué tipo de aeronave es?\n'),readln(PlaneModel),
-			write('Indique, velocidad, distancia con la pista y dirección:\n'),readln(Datos),
-			write('Su pista asignada es :....\n').
+			write('Indique su dirección:\n'),readln(Direccion),
+			(assign(PlaneModel,Direccion,Pista) -> write('Su pista asignada es : '),write(Pista),nl; write('No se encontró resultado para los datos ingresados')).
 
 despegue:-write('Por favor, identifiquese:\n'),readln(PlaneID),
 		  write('Gracias, ¿Qué tipo de aeronave es?\n'),readln(PlaneModel),
 		  write('Indique la hora de salida:\n'),readln(HoraSalida),
 		  write('Indique la direccion de salida:\n'),readln(Direccion),
-		  assign(PlaneModel,Direccion,Pista), 
-		  write('Su pista asignada es : '),write(Pista),nl.
+		  (assign(PlaneModel,Direccion,Pista) -> write('Su pista asignada es : '),write(Pista),nl; write('No se encontró resultado para los datos ingresados')).
 
 emergencia:-write('Buenas, ¿Cual es su emergencia?\n'),readln(Emergencia),
 			write('Por favor, identifiquese:\n'),readln(PlaneID),
-			write('Pista .... asignada y equipo de ayuda enviado!\n').
+			write('Gracias, ¿Qué tipo de aeronave es?\n'),readln(PlaneModel),
+			(assign(PlaneModel,Direccion,Pista) -> write('Su pista asignada es : '),write(Pista),write('\nEquipo de soporte enviado.'),nl; write('No se encontró resultado para los datos ingresados')).
+
 
 
 
